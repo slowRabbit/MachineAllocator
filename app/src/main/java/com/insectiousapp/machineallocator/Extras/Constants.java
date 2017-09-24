@@ -1,4 +1,4 @@
-package com.insectiousapp.machineallocator;
+package com.insectiousapp.machineallocator.Extras;
 
 /**
  * Created by cyris on 24/9/17.

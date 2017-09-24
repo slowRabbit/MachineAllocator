@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:layout_margin="10dp"
     android:gravity="center"
-    tools:context="com.insectiousapp.machineallocator.MainActivity">
+    tools:context="com.insectiousapp.machineallocator.LoginActivity">
 
     <TextView
         android:layout_width="match_parent"

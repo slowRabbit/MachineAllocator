@@ -1,4 +1,4 @@
-package com.insectiousapp.machineallocator;
+package com.insectiousapp.machineallocator.AssetActivity;
 
 /**
  * Created by cyris on 1/4/17.

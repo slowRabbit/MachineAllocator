@@ -1,4 +1,4 @@
-package com.insectiousapp.machineallocator;
+package com.insectiousapp.machineallocator.Database;
 
         import android.content.ContentValues;
         import android.content.Context;
@@ -24,7 +24,7 @@ public class DBSqliteConnection extends SQLiteOpenHelper {
     private static final String COL_1_EMPID = "EmployeeID";
     private static final String COL_2_EMNAME = "EmployeeName";
     private static final String COL_3_EMAILID = "Employee_emailid";
-    private static final String COL_4_UNIT = "Unit";
+    private static final String COL_4_UNIT = "EmployeeUnit";
     private static final String COL_5_PHONENO = "PhoneNumber";
 
     private static final String COL_1_ASSETID = "AssetID";
@@ -41,7 +41,7 @@ public class DBSqliteConnection extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE "+EMPLOYEETABLE+" ("+COL_1_EMPID+ " INTEGER PRIMARY KEY AUTOINCREMENT , "+
-                COL_2_EMNAME+ " TEXT,"+ COL_3_EMAILID + " TEXT," +COL_4_UNIT + "TEXT, " + COL_5_PHONENO+ " TEXT)");
+                COL_2_EMNAME+ " TEXT,"+ COL_3_EMAILID + " TEXT," +COL_4_UNIT + " TEXT, " + COL_5_PHONENO+ " TEXT)");
 
 
         db.execSQL("CREATE TABLE "+ASSETTABLE+" ("+COL_1_ASSETID+ " INTEGER PRIMARY KEY AUTOINCREMENT , "+
@@ -86,12 +86,39 @@ public class DBSqliteConnection extends SQLiteOpenHelper {
 
     }
 
+    public boolean addEmployee(String empName, String emailId, String empUnit, String phNumber)
+    {
+        SQLiteDatabase db=this.getWritableDatabase();
+
+        ContentValues cv=new ContentValues();
+        cv.put(COL_2_EMNAME, empName);
+        cv.put(COL_3_EMAILID, emailId);
+        cv.put(COL_4_UNIT, empUnit);
+        cv.put(COL_5_PHONENO, phNumber);
+
+        long result=db.insert(EMPLOYEETABLE, null, cv);
+        if(result==-1)
+            return false;
+        else
+            return  true;
+
+    }
+
     public Cursor readAllAssets()
     {
         SQLiteDatabase db=this.getWritableDatabase();
         Cursor cursor=db.rawQuery("SELECT * from "+ASSETTABLE, null);
         return  cursor;
     }
+
+    public Cursor readAllEmployees()
+    {
+        SQLiteDatabase db=this.getWritableDatabase();
+        Cursor cursor=db.rawQuery("SELECT * from "+EMPLOYEETABLE, null);
+        return  cursor;
+    }
+
+
 
 //    public boolean updateData(String id, String name, String surname, String marks)
 //    {

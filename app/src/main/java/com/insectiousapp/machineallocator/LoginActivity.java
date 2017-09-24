@@ -6,12 +6,14 @@ import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+import com.insectiousapp.machineallocator.AssetActivity.AssetListActivity;
+import com.insectiousapp.machineallocator.Extras.Constants;
+
+public class LoginActivity extends AppCompatActivity {
 
     SharedPreferences sharedPreferences;
     int savedPin;

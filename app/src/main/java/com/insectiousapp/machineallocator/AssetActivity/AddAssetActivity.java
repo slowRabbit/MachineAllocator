@@ -1,4 +1,4 @@
-package com.insectiousapp.machineallocator;
+package com.insectiousapp.machineallocator.AssetActivity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -6,6 +6,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.insectiousapp.machineallocator.Database.DBSqliteConnection;
+import com.insectiousapp.machineallocator.R;
 
 public class AddAssetActivity extends AppCompatActivity {
 
@@ -47,12 +50,12 @@ public class AddAssetActivity extends AppCompatActivity {
                     boolean inserted=dbSqliteConnection.addAsset(s1, i2, i3, s4);
 
                     if(inserted){
-                        Toast.makeText(getApplicationContext(), "Inserted in database", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Asset Added", Toast.LENGTH_SHORT).show();
                         finish();
                     }
 
                     else
-                        Toast.makeText(getApplicationContext(), "Cannot insert  in database !", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Cannot add Asset !", Toast.LENGTH_SHORT).show();
 
                 }
                 else

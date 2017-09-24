@@ -1,4 +1,4 @@
-package com.insectiousapp.machineallocator;
+package com.insectiousapp.machineallocator.Database;
 
 import android.content.ContentValues;
 import android.content.Context;

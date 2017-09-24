@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".LoginActivity"
             android:windowSoftInputMode="stateVisible|adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -18,10 +18,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AssetListActivity" />
-        <activity android:name=".AddAssetActivity"
-            android:windowSoftInputMode="adjustPan"
-            ></activity>
+        <activity android:name=".AssetActivity.AssetListActivity" />
+        <activity
+            android:name=".AssetActivity.AddAssetActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".EmployeeActivity.AddEmployeeActivity"></activity>
     </application>
 
 </manifest>

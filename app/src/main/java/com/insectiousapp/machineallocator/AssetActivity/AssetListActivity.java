@@ -1,8 +1,7 @@
-package com.insectiousapp.machineallocator;
+package com.insectiousapp.machineallocator.AssetActivity;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,10 +11,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.insectiousapp.machineallocator.EmployeeActivity.AddEmployeeActivity;
+import com.insectiousapp.machineallocator.Database.DBSqliteConnection;
+import com.insectiousapp.machineallocator.R;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class AssetListActivity extends AppCompatActivity implements AssetsAdapter.onItemClickListener {
@@ -33,6 +35,9 @@ public class AssetListActivity extends AppCompatActivity implements AssetsAdapte
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_asset_list);
+
+        Log.i("check", "reached oncreate of asset list activity");
+        Toast.makeText(this, "reached oncreate", Toast.LENGTH_SHORT).show();
 
         ButterKnife.bind(this);
         dbSqliteConnection=new DBSqliteConnection(this);
@@ -87,11 +92,39 @@ public class AssetListActivity extends AppCompatActivity implements AssetsAdapte
     protected void onResume() {
         super.onResume();
 
-        readStudentData();
+        readAllAsset();
+        readAllEmployee();
+    }
+
+    public void readAllEmployee()
+    {
+        Cursor resultCursor=dbSqliteConnection.readAllEmployees();
+        //data=new ArrayList<Asset>();
+
+        if(resultCursor!=null&&resultCursor.getCount()>0)
+        {
+            while(resultCursor.moveToNext())
+            {
+
+                Log.i("dbcheck", "Employee is " + resultCursor.getString(0) + "-" + resultCursor.getString(1) + "-" + resultCursor.getString(2)
+                        + "-" + resultCursor.getString(3) + "-" + resultCursor.getString(4));
+
+//                tempAsset=new Asset(resultCursor.getInt(0), resultCursor.getString(1), resultCursor.getInt(2),
+//                        resultCursor.getInt(3),resultCursor.getString(4));
+                //data.add(tempAsset);
+
+            }
+        }
+//        assetsAdapter =new AssetsAdapter(data, this);
+//        LinearLayoutManager layoutManager=new LinearLayoutManager(this);
+//        recyclerView.setLayoutManager(layoutManager);
+//        recyclerView.setHasFixedSize(true);
+//        recyclerView.setAdapter(assetsAdapter);
 
     }
 
-    public void readStudentData()
+
+    public void readAllAsset()
     {
         Cursor resultCursor=dbSqliteConnection.readAllAssets();
         data=new ArrayList<Asset>();
@@ -101,7 +134,7 @@ public class AssetListActivity extends AppCompatActivity implements AssetsAdapte
             while(resultCursor.moveToNext())
             {
 
-                Log.i("dbcheck", "Asset ID is " + resultCursor.getString(0) + "-" + resultCursor.getString(1) + "-" + resultCursor.getString(2)
+                Log.i("dbcheck", "Asset is " + resultCursor.getString(0) + "-" + resultCursor.getString(1) + "-" + resultCursor.getString(2)
                         + "-" + resultCursor.getString(3) + "-" + resultCursor.getString(4));
 
                 tempAsset=new Asset(resultCursor.getInt(0), resultCursor.getString(1), resultCursor.getInt(2),
@@ -175,16 +208,20 @@ public class AssetListActivity extends AppCompatActivity implements AssetsAdapte
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_assetlistactivity, menu);
+        Log.i("check", "menu inflated");
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
+        Log.i("check", "clickedmenu main");
+
         switch (item.getItemId())
         {
             case R.id.menuAddAsset:
 
+                Log.i("check", "clickedmenu add asset");
                     Intent iAddAsset=new Intent(this, AddAssetActivity.class);
                     startActivity(iAddAsset);
 
@@ -193,7 +230,11 @@ public class AssetListActivity extends AppCompatActivity implements AssetsAdapte
                 Toast.makeText(this, "Remove asset", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.menuAddEmployee:
-                Toast.makeText(this, "Add Employee", Toast.LENGTH_SHORT).show();
+
+                Log.i("check", "clickedmenu add emp");
+                Intent iAddEmployee=new Intent(this, AddEmployeeActivity.class);
+                startActivity(iAddEmployee);
+
                 break;
         }
 

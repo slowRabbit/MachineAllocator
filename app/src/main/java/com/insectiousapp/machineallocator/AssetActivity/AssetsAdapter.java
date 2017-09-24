@@ -1,8 +1,7 @@
-package com.insectiousapp.machineallocator;
+package com.insectiousapp.machineallocator.AssetActivity;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,10 +10,9 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.List;
+import com.insectiousapp.machineallocator.R;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import java.util.List;
 
 /**
  * Created by cyris on 1/4/17.
