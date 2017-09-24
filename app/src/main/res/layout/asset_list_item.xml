@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:android.support.v7.cardview="http://schemas.android.com/tools"
+    android:id="@+id/card_view"
+    android:layout_gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    card_view:contentPadding="0dp"
+    card_view:cardElevation="8dp"
+    card_view:cardCornerRadius="4dp"
+    android:layout_marginTop="12dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    >
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/colorAccent"
+        >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingLeft="15dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:textSize="20sp"
+            android:gravity="center_vertical|left"
+            android:fontFamily="sans-serif-bold"
+            android:text="Id"
+            android:id="@+id/tv_assetId"
+            android:textColor="#fff"
+            />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingRight="15dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:textSize="20sp"
+            android:gravity="center_vertical|right"
+            android:fontFamily="sans-serif-bold"
+            android:text="Company"
+            android:id="@+id/tv_assetMake"
+            android:textColor="#fff"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="5dp"
+        android:layout_gravity="center"
+        >
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@mipmap/asset_allocated_image1"
+            android:layout_margin="8dp"
+            />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingLeft="5dp"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:padding="5dp"
+                android:textSize="15sp"
+                android:fontFamily="sans-serif-light"
+                android:text="Manufacturing Year :"
+                android:textColor="@color/colorPrimary"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="5dp"
+                android:textSize="15sp"
+                android:fontFamily="sans-serif-light"
+                android:text="Allocated :"
+                android:textColor="@color/colorPrimary"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="5dp"
+                android:textSize="15sp"
+                android:fontFamily="sans-serif-light"
+                android:text="Allocated Till"
+                android:textColor="@color/colorPrimary"
+                />
+
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingLeft="5dp"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:padding="5dp"
+                android:textSize="15sp"
+                android:fontFamily="sans-serif-light"
+                android:text="year"
+                android:id="@+id/tv_yearOfMaking"
+                android:textColor="@color/colorPrimaryDark"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="5dp"
+                android:textSize="15sp"
+                android:fontFamily="sans-serif-light"
+                android:text="allocated to"
+                android:id="@+id/tv_allocatedTo"
+                android:textColor="@color/colorPrimaryDark"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="5dp"
+                android:textSize="15sp"
+                android:fontFamily="sans-serif-light"
+                android:text="allocated till"
+                android:id="@+id/tv_allocatedTill"
+                android:textColor="@color/colorPrimaryDark"
+                />
+
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+</LinearLayout>
+
+
+
+    </android.support.v7.widget.CardView>

@@ -49,7 +49,9 @@ public class MainActivity extends AppCompatActivity {
                     if(enteredPin==savedPin)
                     {
                         //move to next activity
-                        Toast.makeText(getApplicationContext(), "Login Done", Toast.LENGTH_SHORT).show();
+                        Intent i=new Intent(getApplicationContext(), AssetListActivity.class);
+                        startActivity(i);
+                        //Toast.makeText(getApplicationContext(), "Login Done", Toast.LENGTH_SHORT).show();
                     }
                     else
                     {
