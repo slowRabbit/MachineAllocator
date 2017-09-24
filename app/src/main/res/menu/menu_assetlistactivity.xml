@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item  android:icon="@drawable/addresource1" android:title="Add Asset" android:id="@+id/menuAddAsset" app:showAsAction="always"></item>
+    <item  android:icon="@drawable/removeresource" android:title="Remove Asset" android:id="@+id/menuRemoveAsset" app:showAsAction="always"></item>
+
+
+</menu>

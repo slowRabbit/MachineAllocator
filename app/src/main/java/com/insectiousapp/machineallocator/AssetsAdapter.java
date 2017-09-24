@@ -2,11 +2,13 @@ package com.insectiousapp.machineallocator;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -96,6 +98,8 @@ public class AssetsAdapter extends RecyclerView.Adapter<AssetsAdapter.AssetViewH
         TextView tvYearOfMaking;
         TextView tvAllocatedTo;
         TextView tvAllocatedTill;
+        ImageView ivAssetImage;
+        String allocatedTo;
 
         public AssetViewHolder(View itemView) {
             super(itemView);
@@ -107,7 +111,7 @@ public class AssetsAdapter extends RecyclerView.Adapter<AssetsAdapter.AssetViewH
             tvYearOfMaking=(TextView)itemView.findViewById(R.id.tv_yearOfMaking);
             tvAllocatedTo=(TextView)itemView.findViewById(R.id.tv_allocatedTo);
             tvAllocatedTill=(TextView)itemView.findViewById(R.id.tv_allocatedTill);
-
+            ivAssetImage=(ImageView)itemView.findViewById(R.id.iv_assetImage);
             //for setting individual click listeners :
 //            itemView.setOnClickListener(this);
             tvAllocatedTo.setOnClickListener(this);
@@ -120,9 +124,19 @@ public class AssetsAdapter extends RecyclerView.Adapter<AssetsAdapter.AssetViewH
             //we will bind the data here with view holder
             tvAssetId.setText(asset.getAssetId());
             tvAssetMake.setText(asset.getAssetMake());
+
             int year=asset.getYearOfMaking();
-            //tvYearOfMaking.setText(asset.getYearOfMaking());
+            tvYearOfMaking.setText(String.valueOf(year));
+
+            allocatedTo=asset.getAllocatedTo();
+
+            if(allocatedTo.contentEquals("NA"))
+                ivAssetImage.setImageDrawable(context.getResources().getDrawable(R.mipmap.asset_notallocated_image1));
+            else
+                ivAssetImage.setImageDrawable(context.getResources().getDrawable(R.mipmap.asset_allocated_image1));
+
             tvAllocatedTo.setText(asset.getAllocatedTo());
+
             tvAllocatedTill.setText(asset.getAllocatedTill());
         }
 
