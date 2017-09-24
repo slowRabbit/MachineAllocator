@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_margin="10dp"
+    android:gravity="center"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    tools:context="com.insectiousapp.machineallocator.MainActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.1"
+        />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.7"
+        android:src="@mipmap/addresourcefullicon"
+        android:layout_margin="10dp"
+        />
+
+    <EditText
+        android:layout_width="200dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:hint="Asset Make"
+        android:layout_margin="10dp"
+        android:paddingLeft="35dp"
+        android:paddingRight="35dp"
+        android:gravity="center"
+        android:id="@+id/etAssetMake"
+        />
+
+    <EditText
+        android:layout_width="200dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:hint="Manufacture Year "
+        android:inputType="number"
+        android:maxLength="4"
+        android:layout_margin="10dp"
+        android:paddingLeft="35dp"
+        android:paddingRight="35dp"
+        android:gravity="center"
+        android:id="@+id/etManuYear"
+        />
+
+    <EditText
+        android:layout_width="200dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:hint="Allocated To"
+        android:inputType="number"
+        android:maxLength="5"
+        android:layout_margin="10dp"
+        android:paddingLeft="35dp"
+        android:paddingRight="35dp"
+        android:gravity="center"
+        android:id="@+id/etAllocatedTo"
+        />
+
+    <EditText
+        android:layout_width="200dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:hint="Allocted Till"
+        android:layout_margin="10dp"
+        android:paddingLeft="35dp"
+        android:paddingRight="35dp"
+        android:gravity="center"
+        android:id="@+id/etAllocatedTill"
+        />
+
+    <Button
+        android:layout_width="250dp"
+        android:layout_height="0dp"
+        android:layout_weight="0.7"
+        android:background="@drawable/button_background1"
+        android:layout_margin="10dp"
+        android:textColor="#fff"
+        android:fontFamily="sans-serif-light"
+        android:textSize="20sp"
+        android:text="Add Asset"
+        android:id="@+id/bAddAsset"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.2"
+        />
+
+</LinearLayout>

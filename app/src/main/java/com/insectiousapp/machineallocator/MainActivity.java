@@ -24,6 +24,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+//        DBSqliteConnection dbSqliteConnection=new DBSqliteConnection(this);
+//        boolean inserted=dbSqliteConnection.addAsset("Sony", 2022, 38, "2032");
+//        if(true)
+//            Toast.makeText(this, "Inserted in database", Toast.LENGTH_SHORT).show();
+//        else
+//            Toast.makeText(this, "Cannot insert  in database !", Toast.LENGTH_SHORT).show();
+
         sharedPreferences = getSharedPreferences(Constants.SharedPreferenceFiles.LOGIN_DETAILS_SP, Context.MODE_PRIVATE);
         savedPin=sharedPreferences.getInt(Constants.SharedPreferenceFiles.LOGIN_KEY, 0);
 

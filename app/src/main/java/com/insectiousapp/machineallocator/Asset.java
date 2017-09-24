@@ -6,13 +6,13 @@ package com.insectiousapp.machineallocator;
 
 public class Asset {
 
-    String assetId;
+    int assetId;
     String assetMake;
     int yearOfMaking;
-    String allocatedTo;
+    int allocatedTo;
     String allocatedTill;
 
-    public Asset( String assetId, String assetMake, int yearOfMaking, String allocatedTo, String allocatedTill)
+    public Asset( int assetId, String assetMake, int yearOfMaking, int allocatedTo, String allocatedTill)
     {
         this.assetId=assetId;
         this.assetMake=assetMake;
@@ -29,11 +29,11 @@ public class Asset {
         return allocatedTill;
     }
 
-    public String getAllocatedTo() {
+    public int getAllocatedTo() {
         return allocatedTo;
     }
 
-    public String getAssetId() {
+    public int getAssetId() {
         return assetId;
     }
 
@@ -45,11 +45,11 @@ public class Asset {
         this.allocatedTill = allocatedTill;
     }
 
-    public void setAllocatedTo(String allocatedTo) {
+    public void setAllocatedTo(int allocatedTo) {
         this.allocatedTo = allocatedTo;
     }
 
-    public void setAssetId(String assetId) {
+    public void setAssetId(int assetId) {
         this.assetId = assetId;
     }
 

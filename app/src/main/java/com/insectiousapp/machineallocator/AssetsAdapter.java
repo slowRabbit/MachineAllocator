@@ -99,7 +99,7 @@ public class AssetsAdapter extends RecyclerView.Adapter<AssetsAdapter.AssetViewH
         TextView tvAllocatedTo;
         TextView tvAllocatedTill;
         ImageView ivAssetImage;
-        String allocatedTo;
+        int allocatedTo;
 
         public AssetViewHolder(View itemView) {
             super(itemView);
@@ -122,7 +122,9 @@ public class AssetsAdapter extends RecyclerView.Adapter<AssetsAdapter.AssetViewH
 
         void bind(Asset asset) {
             //we will bind the data here with view holder
-            tvAssetId.setText(asset.getAssetId());
+            int id=asset.getAssetId();
+            tvAssetId.setText(String.valueOf(id));
+
             tvAssetMake.setText(asset.getAssetMake());
 
             int year=asset.getYearOfMaking();
@@ -130,12 +132,12 @@ public class AssetsAdapter extends RecyclerView.Adapter<AssetsAdapter.AssetViewH
 
             allocatedTo=asset.getAllocatedTo();
 
-            if(allocatedTo.contentEquals("NA"))
+            if(allocatedTo==-1)
                 ivAssetImage.setImageDrawable(context.getResources().getDrawable(R.mipmap.asset_notallocated_image1));
             else
                 ivAssetImage.setImageDrawable(context.getResources().getDrawable(R.mipmap.asset_allocated_image1));
 
-            tvAllocatedTo.setText(asset.getAllocatedTo());
+            tvAllocatedTo.setText(String.valueOf(allocatedTo));
 
             tvAllocatedTill.setText(asset.getAllocatedTill());
         }

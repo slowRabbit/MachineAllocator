@@ -1,9 +1,13 @@
 package com.insectiousapp.machineallocator;
 
+import android.content.Intent;
+import android.database.Cursor;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -20,6 +24,10 @@ public class AssetListActivity extends AppCompatActivity implements AssetsAdapte
     RecyclerView recyclerView;
     AssetsAdapter assetsAdapter;
     List<Asset> data;
+    DBSqliteConnection dbSqliteConnection;
+    int aid, aYear, aAllocatedTo;
+    String amake, aallocatedTill;
+    Asset tempAsset;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,53 +35,89 @@ public class AssetListActivity extends AppCompatActivity implements AssetsAdapte
         setContentView(R.layout.activity_asset_list);
 
         ButterKnife.bind(this);
+        dbSqliteConnection=new DBSqliteConnection(this);
 
         recyclerView=(RecyclerView)findViewById(R.id.rv_itemList);
         data=new ArrayList<>();
-        Asset asset1 =new Asset("1", "Sony", 2017, "NA", "NA");
-        Asset asset2 =new Asset("1", "JBL", 2016, "Karkare", "2019");
-        Asset asset3 =new Asset("1", "Sennheiser", 2014, "NA", "NA");
-        Asset asset4 =new Asset("1", "Bose", 2015, "Hemant", "2025");
-        Asset asset5 =new Asset("1", "Boat", 2012, "System", "2018");
-        Asset asset6 =new Asset("1", "Phillips", 2014, "NA", "NA");
-        Asset asset7 =new Asset("1", "Apple", 2013, "NA", "NA");
+        Asset asset1 =new Asset(1, "Sony", 2017, 0, "NA");
+        Asset asset2 =new Asset(2, "JBL", 2016, -1, "2019");
+        Asset asset3 =new Asset(3, "Sennheiser", 2014, 2, "NA");
+        Asset asset4 =new Asset(4, "Bose", 2015, -1, "2025");
+        Asset asset5 =new Asset(5, "Boat", 2012, 4, "2018");
+        Asset asset6 =new Asset(6, "Phillips", 2014, 5, "NA");
+        Asset asset7 =new Asset(7, "Apple", 2013, 7, "NA");
 
-        data.add(asset1);
-        data.add(asset2);
-        data.add(asset3);
-        data.add(asset4);
-        data.add(asset5);
-        data.add(asset6);
-        data.add(asset7);
-        data.add(asset1);
-        data.add(asset2);
-        data.add(asset3);
-        data.add(asset4);
-        data.add(asset5);
-        data.add(asset6);
-        data.add(asset7);
-
-        data.add(asset1);
-        data.add(asset2);
-        data.add(asset3);
-        data.add(asset4);
-        data.add(asset5);
-        data.add(asset6);
-        data.add(asset7);
-
-        assetsAdapter =new AssetsAdapter(data, this);
-        LinearLayoutManager layoutManager=new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(assetsAdapter);
+//        data.add(asset1);
+//        data.add(asset2);
+//        data.add(asset3);
+//        data.add(asset4);
+//        data.add(asset5);
+//        data.add(asset6);
+//        data.add(asset7);
+//        data.add(asset1);
+//        data.add(asset2);
+//        data.add(asset3);
+//        data.add(asset4);
+//        data.add(asset5);
+//        data.add(asset6);
+//        data.add(asset7);
+//
+//        data.add(asset1);
+//        data.add(asset2);
+//        data.add(asset3);
+//        data.add(asset4);
+//        data.add(asset5);
+//        data.add(asset6);
+//        data.add(asset7);
 
 
         //for swiping and moving items up
         //ItemTouchHelper itemTouchHelper = new ItemTouchHelper(createHelperCallback());
         //itemTouchHelper.attachToRecyclerView(recyclerView);
 
+    }
+
+    int assetId;
+    String assetMake;
+    int yearOfMaking;
+    int allocatedTo;
+    String allocatedTill;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        readStudentData();
 
     }
+
+    public void readStudentData()
+    {
+        Cursor resultCursor=dbSqliteConnection.readAllAssets();
+        data=new ArrayList<Asset>();
+
+        if(resultCursor!=null&&resultCursor.getCount()>0)
+        {
+            while(resultCursor.moveToNext())
+            {
+
+                Log.i("dbcheck", "Asset ID is " + resultCursor.getString(0) + "-" + resultCursor.getString(1) + "-" + resultCursor.getString(2)
+                        + "-" + resultCursor.getString(3) + "-" + resultCursor.getString(4));
+
+                tempAsset=new Asset(resultCursor.getInt(0), resultCursor.getString(1), resultCursor.getInt(2),
+                        resultCursor.getInt(3),resultCursor.getString(4));
+                data.add(tempAsset);
+
+            }
+        }
+        assetsAdapter =new AssetsAdapter(data, this);
+        LinearLayoutManager layoutManager=new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(assetsAdapter);
+
+    }
+
 
     @Override
     public void onItemClick(int position) {
@@ -140,10 +184,16 @@ public class AssetListActivity extends AppCompatActivity implements AssetsAdapte
         switch (item.getItemId())
         {
             case R.id.menuAddAsset:
-                    Toast.makeText(this, "Add asset", Toast.LENGTH_SHORT).show();
+
+                    Intent iAddAsset=new Intent(this, AddAssetActivity.class);
+                    startActivity(iAddAsset);
+
                 break;
             case R.id.menuRemoveAsset:
                 Toast.makeText(this, "Remove asset", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.menuAddEmployee:
+                Toast.makeText(this, "Add Employee", Toast.LENGTH_SHORT).show();
                 break;
         }
 
