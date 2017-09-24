@@ -1,6 +1,8 @@
 package com.insectiousapp.machineallocator.EmployeeActivity;
 
-public class Employee {
+import java.io.Serializable;
+
+public class Employee implements Serializable{
 
     int empId;
     String empName;

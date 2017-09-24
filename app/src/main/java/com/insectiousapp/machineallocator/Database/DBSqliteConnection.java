@@ -5,6 +5,7 @@ package com.insectiousapp.machineallocator.Database;
         import android.database.Cursor;
         import android.database.sqlite.SQLiteDatabase;
         import android.database.sqlite.SQLiteOpenHelper;
+        import android.widget.Toast;
 
         import com.insectiousapp.machineallocator.AssetActivity.Asset;
 
@@ -141,6 +142,25 @@ public class DBSqliteConnection extends SQLiteOpenHelper {
             return false;
     }
 
+    public boolean updateAssetForAllocation(Asset asset, int allocatedToEmpId, String allocatedTill)
+    {
+        SQLiteDatabase db=this.getWritableDatabase();
+
+        ContentValues cv=new ContentValues();
+        //cv.put(COL_1_ASSETID, as);
+        cv.put(COL_2_ASSETMAKE, asset.getAssetMake());
+        cv.put(COL_3_YEAROFMAKING, asset.getYearOfMaking());
+        cv.put(COL_4_ALLOCATEDTO, String.valueOf(allocatedToEmpId));
+        cv.put(COL_5_ALLOCATEDTILL, allocatedTill);
+
+
+        int affectedRows=db.update(ASSETTABLE, cv, COL_1_ASSETID + " = ?", new String[] {String.valueOf(asset.getAssetId())});
+        if(affectedRows>0)
+            return true;
+        else
+            return false;
+    }
+
     public boolean removeAsset(String id)
     {
 
@@ -152,7 +172,6 @@ public class DBSqliteConnection extends SQLiteOpenHelper {
         else
             return true;
     }
-
 
 
 

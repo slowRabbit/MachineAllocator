@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 
 import com.insectiousapp.machineallocator.EmployeeActivity.AddEmployeeActivity;
 import com.insectiousapp.machineallocator.Database.DBSqliteConnection;
+import com.insectiousapp.machineallocator.EmployeeActivity.EmployeeListActivity;
 import com.insectiousapp.machineallocator.R;
 
 import java.util.ArrayList;
@@ -35,6 +37,7 @@ public class AssetListActivity extends AppCompatActivity implements AssetsAdapte
     int aid, aYear, aAllocatedTo;
     String amake, aallocatedTill;
     Asset tempAsset;
+    boolean itemMoved;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,8 +83,8 @@ public class AssetListActivity extends AppCompatActivity implements AssetsAdapte
 
 
         //for swiping and moving items up
-        //ItemTouchHelper itemTouchHelper = new ItemTouchHelper(createHelperCallback());
-        //itemTouchHelper.attachToRecyclerView(recyclerView);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(createHelperCallback());
+        itemTouchHelper.attachToRecyclerView(recyclerView);
 
     }
 
@@ -96,35 +99,9 @@ public class AssetListActivity extends AppCompatActivity implements AssetsAdapte
         super.onResume();
 
         refreshAssetList();
+        itemMoved=false;
         //readAllAsset();
         //readAllEmployee();
-    }
-
-    public void readAllEmployee()
-    {
-        Cursor resultCursor=dbSqliteConnection.readAllEmployees();
-        //data=new ArrayList<Asset>();
-
-        if(resultCursor!=null&&resultCursor.getCount()>0)
-        {
-            while(resultCursor.moveToNext())
-            {
-
-                Log.i("dbcheck", "Employee is " + resultCursor.getString(0) + "-" + resultCursor.getString(1) + "-" + resultCursor.getString(2)
-                        + "-" + resultCursor.getString(3) + "-" + resultCursor.getString(4));
-
-//                tempAsset=new Asset(resultCursor.getInt(0), resultCursor.getString(1), resultCursor.getInt(2),
-//                        resultCursor.getInt(3),resultCursor.getString(4));
-                //data.add(tempAsset);
-
-            }
-        }
-//        assetsAdapter =new AssetsAdapter(data, this);
-//        LinearLayoutManager layoutManager=new LinearLayoutManager(this);
-//        recyclerView.setLayoutManager(layoutManager);
-//        recyclerView.setHasFixedSize(true);
-//        recyclerView.setAdapter(assetsAdapter);
-
     }
 
 
@@ -158,17 +135,12 @@ public class AssetListActivity extends AppCompatActivity implements AssetsAdapte
     private void refreshAssetList()
     {
         readAllAsset();
-        readAllEmployee();
     }
 
     @Override
     public void onItemClick(int position) {
 
         Asset asset =data.get(position);
-        //Toast.makeText(this, "Item clicked is :"+asset.getAssetId()+"-+"+asset.getAssetMake()+"-"+asset.getYearOfMaking()+"-"+
-               // asset.getAllocatedTo()+"-"+asset.getAllocatedTill()+"-", Toast.LENGTH_SHORT).show();
-
-        //check if the asset is allocated or not
         int allocatedAssetId=asset.getAllocatedTo();
         if(allocatedAssetId==-1)
         {
@@ -182,14 +154,6 @@ public class AssetListActivity extends AppCompatActivity implements AssetsAdapte
             //call function for deallocation
             deallocateAsset(asset);
         }
-
-
-
-
-
-//        Intent i=new Intent();
-//        i.setClass(this, DetailActivity.class);
-//        startActivity(i);
 
     }
 
@@ -218,39 +182,71 @@ public class AssetListActivity extends AppCompatActivity implements AssetsAdapte
 
     private void allocateAsset(final Asset asset)
     {
-        AlertDialog.Builder alertDialog=new AlertDialog.Builder(this);
-        alertDialog.setTitle("Allocate Asset");
-        alertDialog.setMessage("Are you sure to allocate the asset ?");
+        Intent iSelectEmployeeFromList=new Intent(this, EmployeeListActivity.class);
+        iSelectEmployeeFromList.putExtra("assetobject", asset);
+        startActivity(iSelectEmployeeFromList);
+    }
+
+    private ItemTouchHelper.Callback createHelperCallback() {
+        ItemTouchHelper.SimpleCallback simpleItemTouchCallback =
+                new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN,
+                        ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+
+                    @Override
+                    public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
+                                          RecyclerView.ViewHolder target) {
+                        moveItem(viewHolder.getAdapterPosition(), target.getAdapterPosition());
+
+                        return true;
+                    }
+
+                    @Override
+                    public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) {
+                        //we dont want to delete on swipe
+                        //deleteItem(viewHolder.getAdapterPosition());
+                        int position=viewHolder.getAdapterPosition();
+                        Asset swipedAsset=data.get(position);
+                        deleteAssetItemOnSwipe(swipedAsset);
+                        refreshAssetList();
+                    }
+                };
+        return simpleItemTouchCallback;
+    }
+
+    private void saveUpdatedListSequenceToDatabase()
+    {
+
+        for(Asset a: data)
+        {
+            dbSqliteConnection.addAsset(a.getAssetMake(), a.getYearOfMaking(), a.getAllocatedTo(), a.allocatedTill);
+        }
+       // Toast.makeText(getApplicationContext(), "Updated databse Successfully", Toast.LENGTH_SHORT).show();
+
+    }
+
+    private void deleteAssetItemOnSwipe(final Asset swipedAsset)
+    {
+        final AlertDialog.Builder alertDialog=new AlertDialog.Builder(this);
+        alertDialog.setTitle("Remove Asset");
+        alertDialog.setMessage("Do you really want to remove asset with Id : "+String.valueOf(swipedAsset.getAssetId()));
         alertDialog.setIcon(R.drawable.removeresource);
-        alertDialog.setPositiveButton("Allocate", new DialogInterface.OnClickListener() {
+        alertDialog.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                //now we need to deallocate the asset
+
+                String strId=String.valueOf(swipedAsset.getAssetId());
+                boolean isDeleted=dbSqliteConnection.removeAsset(strId);
+                if(isDeleted) {
+                    refreshAssetList();
+                    Toast.makeText(getApplicationContext(), "Employee deleted with id: " + strId, Toast.LENGTH_SHORT).show();
+                }
+                else
+                    Toast.makeText(getApplicationContext(), "Employee cannot be deleted !", Toast.LENGTH_SHORT).show();
             }
         });
+        alertDialog.setCancelable(true);
         alertDialog.create().show();
-        int id=asset.getAssetId();
     }
-//    private ItemTouchHelper.Callback createHelperCallback() {
-//        ItemTouchHelper.SimpleCallback simpleItemTouchCallback =
-//                new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN,
-//                        ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-//
-//                    @Override
-//                    public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
-//                                          RecyclerView.ViewHolder target) {
-//                        moveItem(viewHolder.getAdapterPosition(), target.getAdapterPosition());
-//                        return true;
-//                    }
-//
-//                    @Override
-//                    public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) {
-//                        //we dont want to delete on swipe
-//                        //deleteItem(viewHolder.getAdapterPosition());
-//                    }
-//                };
-//        return simpleItemTouchCallback;
-//    }
 
 //    private void addItemToList() {
 //

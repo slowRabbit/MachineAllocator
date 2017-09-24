@@ -104,7 +104,7 @@
                 android:padding="2dp"
                 android:textSize="15sp"
                 android:fontFamily="sans-serif-light"
-                android:text="Allocated :"
+                android:text="Allocated To:"
                 android:textColor="@color/colorPrimary"
                 />
 

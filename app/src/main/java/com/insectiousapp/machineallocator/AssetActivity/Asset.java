@@ -1,10 +1,12 @@
 package com.insectiousapp.machineallocator.AssetActivity;
 
+import java.io.Serializable;
+
 /**
  * Created by cyris on 1/4/17.
  */
 
-public class Asset {
+public class Asset implements Serializable{
 
     int assetId;
     String assetMake;
