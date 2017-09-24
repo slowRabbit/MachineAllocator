@@ -6,6 +6,8 @@ package com.insectiousapp.machineallocator.Database;
         import android.database.sqlite.SQLiteDatabase;
         import android.database.sqlite.SQLiteOpenHelper;
 
+        import com.insectiousapp.machineallocator.AssetActivity.Asset;
+
 /**
  * Created by DELL on 9/24/2017.
  */
@@ -120,30 +122,36 @@ public class DBSqliteConnection extends SQLiteOpenHelper {
 
 
 
-//    public boolean updateData(String id, String name, String surname, String marks)
-//    {
-//        SQLiteDatabase db=this.getWritableDatabase();
-//
-//        ContentValues cv=new ContentValues();
-//        cv.put(COL_1_ID, id);
-//        cv.put(COL_2_STUDENT_NAME, name);
-//        cv.put(COL_3_STUDENT_SURNAME, surname);
-//        cv.put(COL_4_STUDENT_MARKS, marks);
-//
-//        db.update(STUDENT_TABLE, cv, "ID = ?", new String[] {id});
-//        return true;
-//    }
+    public boolean updateAssetForDeallocation(Asset asset)
+    {
+        SQLiteDatabase db=this.getWritableDatabase();
 
-//    public boolean removeAsset(String id)
-//    {
-//        SQLiteDatabase db=this.getWritableDatabase();
-//        int resultRowsAffected=db.delete(STUDENT_TABLE, "ID = ?", new String[] {id});
-//
-//        if(resultRowsAffected==0)
-//            return false;
-//        else
-//            return true;
-//    }
+        ContentValues cv=new ContentValues();
+        //cv.put(COL_1_ASSETID, as);
+        cv.put(COL_2_ASSETMAKE, asset.getAssetMake());
+        cv.put(COL_3_YEAROFMAKING, asset.getYearOfMaking());
+        cv.put(COL_4_ALLOCATEDTO, "-1");
+        cv.put(COL_5_ALLOCATEDTILL, "NA");
+
+
+        int affectedRows=db.update(ASSETTABLE, cv, COL_1_ASSETID + " = ?", new String[] {String.valueOf(asset.getAssetId())});
+        if(affectedRows>0)
+            return true;
+        else
+            return false;
+    }
+
+    public boolean removeAsset(String id)
+    {
+
+        SQLiteDatabase db=this.getWritableDatabase();
+        int resultRowsAffected=db.delete(ASSETTABLE, COL_1_ASSETID + " = ?", new String[] {id});
+
+        if(resultRowsAffected==0)
+            return false;
+        else
+            return true;
+    }
 
 
 

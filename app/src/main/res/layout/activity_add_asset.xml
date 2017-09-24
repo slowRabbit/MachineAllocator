@@ -56,7 +56,7 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:hint="Allocated To"
-        android:inputType="number"
+        android:inputType="numberSigned"
         android:maxLength="5"
         android:layout_margin="10dp"
         android:paddingLeft="35dp"

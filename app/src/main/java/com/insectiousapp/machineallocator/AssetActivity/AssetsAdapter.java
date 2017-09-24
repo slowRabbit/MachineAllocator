@@ -130,14 +130,18 @@ public class AssetsAdapter extends RecyclerView.Adapter<AssetsAdapter.AssetViewH
 
             allocatedTo=asset.getAllocatedTo();
 
-            if(allocatedTo==-1)
+            if(allocatedTo==-1) {
                 ivAssetImage.setImageDrawable(context.getResources().getDrawable(R.mipmap.asset_notallocated_image1));
-            else
+                tvAllocatedTo.setText("NA");
+                tvAllocatedTill.setText("NA");
+            }
+            else {
                 ivAssetImage.setImageDrawable(context.getResources().getDrawable(R.mipmap.asset_allocated_image1));
+                tvAllocatedTo.setText(String.valueOf(allocatedTo));
+                tvAllocatedTill.setText(asset.getAllocatedTill());
+            }
 
-            tvAllocatedTo.setText(String.valueOf(allocatedTo));
 
-            tvAllocatedTill.setText(asset.getAllocatedTill());
         }
 
 
