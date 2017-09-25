@@ -17,8 +17,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.insectiousapp.machineallocator.Database.AssetEmployeeSQLiteConnection;
 import com.insectiousapp.machineallocator.EmployeeActivity.AddEmployeeActivity;
-import com.insectiousapp.machineallocator.Database.DBSqliteConnection;
 import com.insectiousapp.machineallocator.EmployeeActivity.EmployeeListActivity;
 import com.insectiousapp.machineallocator.R;
 
@@ -33,7 +33,7 @@ public class AssetListActivity extends AppCompatActivity implements AssetsAdapte
     RecyclerView recyclerView;
     AssetsAdapter assetsAdapter;
     List<Asset> data;
-    DBSqliteConnection dbSqliteConnection;
+    AssetEmployeeSQLiteConnection assetEmployeeSQLiteConnection;
     int aid, aYear, aAllocatedTo;
     String amake, aallocatedTill;
     Asset tempAsset;
@@ -44,9 +44,9 @@ public class AssetListActivity extends AppCompatActivity implements AssetsAdapte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_asset_list);
 
-
+        setTitle("Asset List");
         ButterKnife.bind(this);
-        dbSqliteConnection=new DBSqliteConnection(this);
+        assetEmployeeSQLiteConnection =new AssetEmployeeSQLiteConnection(this);
 
         recyclerView=(RecyclerView)findViewById(R.id.rv_itemList);
         data=new ArrayList<>();
@@ -107,7 +107,7 @@ public class AssetListActivity extends AppCompatActivity implements AssetsAdapte
 
     public void readAllAsset()
     {
-        Cursor resultCursor=dbSqliteConnection.readAllAssets();
+        Cursor resultCursor= assetEmployeeSQLiteConnection.readAllAssets();
         data=new ArrayList<Asset>();
 
         if(resultCursor!=null&&resultCursor.getCount()>0)
@@ -167,7 +167,7 @@ public class AssetListActivity extends AppCompatActivity implements AssetsAdapte
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 //now we need to deallocate the asset
-                boolean isDeallocated=dbSqliteConnection.updateAssetForDeallocation(asset);
+                boolean isDeallocated= assetEmployeeSQLiteConnection.updateAssetForDeallocation(asset);
                 if(isDeallocated) {
                     Toast.makeText(getApplicationContext(), "Asset Deallocated !", Toast.LENGTH_SHORT).show();
                     refreshAssetList();
@@ -218,7 +218,7 @@ public class AssetListActivity extends AppCompatActivity implements AssetsAdapte
 
         for(Asset a: data)
         {
-            dbSqliteConnection.addAsset(a.getAssetMake(), a.getYearOfMaking(), a.getAllocatedTo(), a.allocatedTill);
+            assetEmployeeSQLiteConnection.addAsset(a.getAssetMake(), a.getYearOfMaking(), a.getAllocatedTo(), a.allocatedTill);
         }
        // Toast.makeText(getApplicationContext(), "Updated databse Successfully", Toast.LENGTH_SHORT).show();
 
@@ -235,7 +235,7 @@ public class AssetListActivity extends AppCompatActivity implements AssetsAdapte
             public void onClick(DialogInterface dialogInterface, int i) {
 
                 String strId=String.valueOf(swipedAsset.getAssetId());
-                boolean isDeleted=dbSqliteConnection.removeAsset(strId);
+                boolean isDeleted= assetEmployeeSQLiteConnection.removeAsset(strId);
                 if(isDeleted) {
                     refreshAssetList();
                     Toast.makeText(getApplicationContext(), "Employee deleted with id: " + strId, Toast.LENGTH_SHORT).show();
@@ -318,7 +318,7 @@ public class AssetListActivity extends AppCompatActivity implements AssetsAdapte
             public void onClick(DialogInterface dialog, int whichButton) {
                 //do something with edt.getText().toString();
                 String strId=edt.getText().toString();
-                boolean isDeleted=dbSqliteConnection.removeAsset(strId);
+                boolean isDeleted= assetEmployeeSQLiteConnection.removeAsset(strId);
                 if(isDeleted) {
                     refreshAssetList();
                     Toast.makeText(getApplicationContext(), "Employee deleted with id: " + strId, Toast.LENGTH_SHORT).show();

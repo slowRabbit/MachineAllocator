@@ -11,6 +11,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.insectiousapp.machineallocator.AssetActivity.Asset;
+import com.insectiousapp.machineallocator.AssetActivity.AssetListActivityAccToEmployee;
 import com.insectiousapp.machineallocator.Database.AssetEmployeeSQLiteConnection;
 import com.insectiousapp.machineallocator.R;
 
@@ -21,7 +22,7 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 
-public class EmployeeListActivity extends AppCompatActivity implements EmployeeAdapter.onItemClickListener {
+public class EmployeeListActivityForAssets extends AppCompatActivity implements EmployeeAdapter.onItemClickListener {
 
     //@BindView(R.id.rv_itemList)
     RecyclerView recyclerView;
@@ -32,7 +33,6 @@ public class EmployeeListActivity extends AppCompatActivity implements EmployeeA
     String amake, aallocatedTill;
     Asset tempAsset;
     Employee employee;
-    Asset recievedAsset;
     String allocatedTillDate;
 
     @Override
@@ -40,29 +40,20 @@ public class EmployeeListActivity extends AppCompatActivity implements EmployeeA
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_employee_list);
 
-        setTitle("Choose an employee");
+        setTitle("All Employees");
 
-        Intent i=getIntent();
-        recievedAsset= (Asset) i.getSerializableExtra("assetobject");
 
         ButterKnife.bind(this);
         assetEmployeeSQLiteConnection =new AssetEmployeeSQLiteConnection(this);
 
         recyclerView=(RecyclerView)findViewById(R.id.rv_employee_List);
         data=new ArrayList<>();
-
+        readAllEmployee();
         //for swiping and moving items up
         //ItemTouchHelper itemTouchHelper = new ItemTouchHelper(createHelperCallback());
         //itemTouchHelper.attachToRecyclerView(recyclerView);
 
     }
-
-    int assetId;
-    String assetMake;
-    int yearOfMaking;
-    int allocatedTo;
-    String allocatedTill;
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -72,6 +63,8 @@ public class EmployeeListActivity extends AppCompatActivity implements EmployeeA
 
     public void readAllEmployee()
     {
+        data=new ArrayList<Employee>();
+
         Cursor resultCursor= assetEmployeeSQLiteConnection.readAllEmployees();
         if(resultCursor!=null&&resultCursor.getCount()>0)
         {
@@ -99,45 +92,12 @@ public class EmployeeListActivity extends AppCompatActivity implements EmployeeA
     public void onItemClick(int position) {
 
         employee =data.get(position);
-        allocateEmployeeToCurrentAsset(employee);
-        sendMessageToEmployee(employee);
-        finish();
+
+        Intent i=new Intent(this, AssetListActivityAccToEmployee.class);
+        i.putExtra("allocatedto", String.valueOf(employee.getEmpId()));
+        startActivity(i);
     }
 
-    private void allocateEmployeeToCurrentAsset(Employee employee)
-    {
-        //now we have both asset and employee
-        //first add employee id to the asset
-
-        //get current date and add 6 months to it
-        Calendar c = Calendar.getInstance();
-        c.add(Calendar.MONTH, 6);
-        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
-        allocatedTillDate = df.format(c.getTime());
-
-        boolean isAllocated= assetEmployeeSQLiteConnection.updateAssetForAllocation(recievedAsset, employee.getEmpId(), allocatedTillDate);
-
-        if(isAllocated)
-        {
-            Toast.makeText(this, "Asset Allocated", Toast.LENGTH_SHORT).show();
-        }
-        else
-        {
-            Toast.makeText(this, "Asset cannot be allocated !! ", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private void sendMessageToEmployee(Employee employee)
-    {
-
-        String strPhone = employee.getPhNumber();
-        String strMessage = "Hey "+employee.getEmpName()+ " you have been allocated :"+recievedAsset.getAssetMake()+"-"
-                +recievedAsset.getAssetId()+" till "+allocatedTillDate;
-        SmsManager sms = SmsManager.getDefault();
-        sms.sendTextMessage(strPhone, null, strMessage, null, null);
-        Toast.makeText(this, "Sent Message to : " + strPhone, Toast.LENGTH_SHORT).show();
-
-    }
 
 //    private ItemTouchHelper.Callback createHelperCallback() {
 //        ItemTouchHelper.SimpleCallback simpleItemTouchCallback =

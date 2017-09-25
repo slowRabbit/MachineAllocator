@@ -7,7 +7,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.insectiousapp.machineallocator.Database.DBSqliteConnection;
+import com.insectiousapp.machineallocator.Database.AssetEmployeeSQLiteConnection;
 import com.insectiousapp.machineallocator.R;
 
 public class AddAssetActivity extends AppCompatActivity {
@@ -20,6 +20,8 @@ public class AddAssetActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_asset);
+
+        setTitle("Add aset");
 
         etAssetMake=(EditText)findViewById(R.id.etAssetMake);
         etYearMake=(EditText)findViewById(R.id.etManuYear);
@@ -46,8 +48,8 @@ public class AddAssetActivity extends AppCompatActivity {
                     int i2=Integer.parseInt(s2);
                     int i3=Integer.parseInt(s3);
 
-                    DBSqliteConnection dbSqliteConnection=new DBSqliteConnection(getApplicationContext());
-                    boolean inserted=dbSqliteConnection.addAsset(s1, i2, i3, s4);
+                    AssetEmployeeSQLiteConnection assetEmployeeSQLiteConnection =new AssetEmployeeSQLiteConnection(getApplicationContext());
+                    boolean inserted= assetEmployeeSQLiteConnection.addAsset(s1, i2, i3, s4);
 
                     if(inserted){
                         Toast.makeText(getApplicationContext(), "Asset Added", Toast.LENGTH_SHORT).show();

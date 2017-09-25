@@ -13,7 +13,7 @@ package com.insectiousapp.machineallocator.Database;
  * Created by DELL on 9/24/2017.
  */
 
-public class DBSqliteConnection extends SQLiteOpenHelper {
+public class AssetEmployeeSQLiteConnection extends SQLiteOpenHelper {
     static final String viewAssets = "ViewAssets";
 
     Context ctx;
@@ -36,7 +36,7 @@ public class DBSqliteConnection extends SQLiteOpenHelper {
     private static final String COL_4_ALLOCATEDTO = "AllocatedTo";
     private static final String COL_5_ALLOCATEDTILL = "AllocatedTill";
 
-    public DBSqliteConnection(Context ctx){
+    public AssetEmployeeSQLiteConnection(Context ctx){
 
         super(ctx,DB_NAME,null,DB_VERSION);
     }
@@ -114,6 +114,13 @@ public class DBSqliteConnection extends SQLiteOpenHelper {
         return  cursor;
     }
 
+    public Cursor readAllAssetsAccToAllocatedTo(String allocatedTo)
+    {
+        SQLiteDatabase db=this.getWritableDatabase();
+        Cursor cursor=db.rawQuery("SELECT * from "+ASSETTABLE + " WHERE "+COL_4_ALLOCATEDTO+ " ="+allocatedTo, null);
+        return  cursor;
+    }
+
     public Cursor readAllEmployees()
     {
         SQLiteDatabase db=this.getWritableDatabase();
@@ -173,6 +180,12 @@ public class DBSqliteConnection extends SQLiteOpenHelper {
             return true;
     }
 
-
+    public Cursor getGroupedAssetListAccToEmployee()
+    {
+        SQLiteDatabase db=this.getWritableDatabase();
+        //Cursor cursor=db.rawQuery("SELECT "+COL_4_ALLOCATEDTO+"," + COL_1_ASSETID+ ","+COL_2_ASSETMAKE+" from "+ASSETTABLE+" GROUP BY "+COL_4_ALLOCATEDTO, null);
+        Cursor cursor=db.rawQuery("SELECT DISTINCT("+COL_4_ALLOCATEDTO+") FROM " + ASSETTABLE, null);
+        return  cursor;
+    }
 
 }

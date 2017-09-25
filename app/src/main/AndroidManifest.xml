@@ -26,6 +26,9 @@
             android:name=".AssetActivity.AddAssetActivity"
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".EmployeeActivity.AddEmployeeActivity"></activity>
+        <activity android:name=".AssetActivity.AssetListActivityAccToEmployee"/>
+        <activity android:name=".EmployeeActivity.EmployeeListActivityForAssets"/>
+
     </application>
 
 </manifest>
